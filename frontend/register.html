@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register - Wholesale Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Register</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="login.html">Log in</a>
+    </nav>
+  </header>
+
+  <main>
+    <form id="registerForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" required />
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" required />
+      
+      <button type="submit">Register</button>
+    </form>
+    <p id="message"></p>
+  </main>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
