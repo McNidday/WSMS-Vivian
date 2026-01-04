@@ -4,6 +4,7 @@ const router = Router();
 router.get("/", customerController.getAllCustomers);
 router.post("/", customerController.createCustomer);
 router.get("/:id", customerController.getCustomer);
+router.get("/:id/history", customerController.getCustomerHistory);
 router.put("/:id", customerController.updateCustomer);
 router.delete("/:id", customerController.deleteCustomer);
 export default router;

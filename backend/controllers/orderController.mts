@@ -1,4 +1,5 @@
 import Order from "../models/Order.mjs";
+import Product from "../models/Product.mjs";
 import { Request, Response } from "express";
 
 export default {
@@ -9,7 +10,17 @@ export default {
     res.json(orders);
   },
   createOrder: async (req: Request, res: Response) => {
-    const order = new Order(req.body);
+    const product = await Product.findById(req.body.productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    const order = new Order({
+      customerId: req.body.customerId,
+      products: [
+        { productId: req.body.productId, quantity: req.body.quantity },
+      ],
+      totalAmount: req.body.quantity * product.price,
+    });
     await order.save();
     res.status(201).json(order);
   },

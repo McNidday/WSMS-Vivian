@@ -1,4 +1,4 @@
-import About from "../models/About.mjs";
+import About from "../models/about.mjs";
 
 export default {
   getAllAbouts: async (req, res) => {

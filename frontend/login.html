@@ -3,29 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wholesale Management System - Login</title>
+  <title>Login - Wholesale Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <style>
+    .login-container {
+      max-width: 450px;
+      margin: 50px auto;
+    }
+    .login-card {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .login-header h2 {
+      color: #2c3e50;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .login-header p {
+      color: #7f8c8d;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s;
+      background: #f8f9fa;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    .login-links {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .login-links a {
+      color: #667eea;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 500;
+    }
+    .login-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-  <h2>Login</h2>
-  <form action="/login" method="POST">
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username" required><br><br>
+  <header class="theme-header">
+    <div class="theme-header-content">
+      <h1>🔐 Login</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="service.html">Services</a>
+        <a href="payment.html">Payments</a>
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="login.html" class="active">Login</a>
+      </nav>
+    </div>
+  </header>
 
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password" required><br><br>
+  <main class="theme-main">
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <h2>Welcome Back</h2>
+          <p>Sign in to access your dashboard</p>
+        </div>
 
-    <label for="role">Select Role:</label><br>
-    <select id="role" name="role" required>
-      <option value="">-- Select Role --</option>
-      <option value="admin">Admin</option>
-      <option value="supplier">Supplier</option>
-      <option value="customer">Customer</option>
-    </select><br><br>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+          </div>
 
-    <button type="submit">Login</button>
-  </form>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+          </div>
 
-  <p><a href="#">Forgot Password?</a></p>
-  <p><a href="register.html">Create an Account</a></p>
+          <div class="form-group">
+            <label for="role">Role</label>
+            <select id="role" name="role" required>
+              <option value="">-- Select Role --</option>
+              <option value="admin">Admin</option>
+              <option value="supplier">Supplier</option>
+              <option value="customer">Customer</option>
+            </select>
+          </div>
+
+          <button type="submit" class="theme-btn" style="width: 100%; margin-top: 10px;">
+            Login
+          </button>
+
+          <div id="loginMessage" style="margin-top: 15px;"></div>
+        </form>
+
+        <div class="login-links">
+          <a href="#">Forgot Password?</a>
+          <a href="register.html">Create an Account</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="theme-footer">
+    <p>&copy; 2025 Wholesale Management Co. All rights reserved.</p>
+  </footer>
+
+  <script src="js/login.js"></script>
 </body>
 </html>

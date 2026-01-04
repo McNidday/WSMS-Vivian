@@ -7,19 +7,42 @@ export interface IOrder extends Document {
   status: string;
   date: Date;
   totalPrice?: number; // 👈 virtual alias
+  shippingAddress?: string;
+  notes?: string;
 }
 
 const OrderSchema = new Schema<IOrder>(
   {
-    customerId: { type: Schema.Types.ObjectId, ref: "Customer", required: true },
+    customerId: {
+      type: Schema.Types.ObjectId,
+      ref: "Customer",
+      required: true,
+    },
     products: [
       {
-        productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+        productId: {
+          type: Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
         quantity: { type: Number, required: true },
       },
     ],
     totalAmount: { type: Number, required: true },
-    status: { type: String, default: "pending" },
+    status: {
+      type: String,
+      enum: [
+        "pending",
+        "processing",
+        "paid",
+        "shipped",
+        "delivered",
+        "cancelled",
+      ],
+      default: "pending",
+    },
+    shippingAddress: { type: String },
+    notes: { type: String },
     date: { type: Date, default: Date.now },
   },
   {
@@ -34,5 +57,3 @@ OrderSchema.virtual("totalPrice").get(function (this: IOrder) {
 });
 
 export default model<IOrder>("Order", OrderSchema);
-
-

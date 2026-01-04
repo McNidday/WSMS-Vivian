@@ -6,4 +6,4 @@ const serviceSchema = new mongoose.Schema({
   price: Number,
 });
 
-export default mongoose.model("Service", serviceSchema);
+export default mongoose.models.Service || mongoose.model("Service", serviceSchema);

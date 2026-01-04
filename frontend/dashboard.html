@@ -1,249 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Dashboard | Wholesale System</title>
-</head>
-<body>
-  <h1>Wholesale Management Dashboard</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Wholesale Management System</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+  <body>
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1>📦 Wholesale Management Dashboard</h1>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="dashboard.html" class="active">Dashboard</a>
+          <a href="payment.html">Payments</a>
+          <a href="login.html">Login</a>
+        </nav>
+      </div>
+    </header>
 
-  <!-- PRODUCTS -->
-  <h2>Manage Products</h2>
-  <form id="productForm">
-    <input type="text" id="productName" placeholder="Product Name" required>
-    <input type="number" id="productPrice" placeholder="Price" required>
-    <input type="number" id="productQuantity" placeholder="Quantity" required>
-    <button type="submit">Add Product</button>
-  </form>
-  <table id="productTable" border="1">
-    <thead>
-      <tr>
-        <th>Name</th><th>Price</th><th>Quantity</th><th>Action</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+    <main class="dashboard-main">
+      <!-- PRODUCT MANAGEMENT -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>📦 Product Management</h2>
+          <p class="section-subtitle">Add and organize inventory with ease</p>
+        </div>
+        <form id="productForm" class="form-grid">
+          <input
+            type="text"
+            id="productName"
+            placeholder="Product Name"
+            required
+          />
+          <input
+            type="number"
+            id="productPrice"
+            placeholder="Price ($)"
+            step="0.01"
+            required
+          />
+          <input
+            type="number"
+            id="productQuantity"
+            placeholder="Quantity"
+            min="0"
+            required
+          />
+          <button type="submit" class="btn-primary">➕ Add Product</button>
+        </form>
+        <div class="table-container">
+          <table id="productTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Stock Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
 
-  <!-- CUSTOMERS -->
-  <h2>Customers</h2>
-  <form id="customerForm">
-    <input type="text" id="customerName" placeholder="Full Name" required>
-    <input type="email" id="customerEmail" placeholder="Email" required>
-    <input type="text" id="customerPhone" placeholder="Phone Number" required>
-    <input type="text" id="customerAddress" placeholder="Address" required>
-    <button type="submit">Add Customer</button>
-  </form>
-  <table id="customerTable" border="1">
-    <thead>
-      <tr>
-        <th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Action</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+      <!-- CUSTOMER MANAGEMENT -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>👥 Customer Manager</h2>
+          <p class="section-subtitle">
+            View purchase history and contact details
+          </p>
+        </div>
+        <form id="customerForm" class="form-grid">
+          <input
+            type="text"
+            id="customerName"
+            placeholder="Full Name"
+            required
+          />
+          <input type="email" id="customerEmail" placeholder="Email" required />
+          <input
+            type="text"
+            id="customerPhone"
+            placeholder="Phone Number"
+            required
+          />
+          <input
+            type="text"
+            id="customerAddress"
+            placeholder="Address"
+            required
+          />
+          <button type="submit" class="btn-primary">➕ Add Customer</button>
+        </form>
+        <div class="table-container">
+          <table id="customerTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
 
-  <!-- ORDERS -->
-  <h2>Orders</h2>
-  <form id="orderForm">
-    <select id="orderCustomer" required></select>
-    <select id="orderProduct" required></select>
-    <input type="number" id="orderQuantity" placeholder="Quantity" required>
-    <button type="submit">Place Order</button>
-  </form>
-  <table id="orderTable" border="1">
-    <thead>
-      <tr>
-        <th>Customer</th><th>Product</th><th>Quantity</th><th>Total Price</th><th>Date</th><th>Action</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+      <!-- ORDER PROCESSING -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>🛒 Order Processing</h2>
+          <p class="section-subtitle">
+            Handle sales orders quickly and efficiently
+          </p>
+        </div>
+        <form id="orderForm" class="form-grid">
+          <select id="orderCustomer" required>
+            <option value="">-- Select Customer --</option>
+          </select>
+          <select id="orderProduct" required>
+            <option value="">-- Select Product --</option>
+          </select>
+          <input
+            type="number"
+            id="orderQuantity"
+            placeholder="Quantity"
+            min="1"
+            required
+          />
+          <button type="submit" class="btn-primary">📝 Place Order</button>
+        </form>
+        <div class="table-container">
+          <table id="orderTable">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
 
-  <!-- REPORTS -->
-  <h2>Reports</h2>
-  <div id="salesReport">No sales yet.</div>
+      <!-- SHIPPING TOOLS -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>🚚 Shipping Tools</h2>
+          <p class="section-subtitle">
+            Assign and track deliveries in real-time
+          </p>
+        </div>
+        <div class="shipping-controls">
+          <select id="shippingOrder" class="form-select">
+            <option value="">-- Select Order to Ship --</option>
+          </select>
+          <input
+            type="text"
+            id="shippingAddress"
+            placeholder="Shipping Address"
+            class="form-input"
+          />
+          <input type="date" id="estimatedDelivery" class="form-input" />
+          <button onclick="createShipping()" class="btn-primary">
+            📦 Create Shipment
+          </button>
+        </div>
+        <div class="table-container">
+          <table id="shippingTable">
+            <thead>
+              <tr>
+                <th>Tracking #</th>
+                <th>Order ID</th>
+                <th>Status</th>
+                <th>Location</th>
+                <th>Est. Delivery</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
 
-<script>
-  
-const products = [];
-const customers = [];
-const orders = [];
+      <!-- INVENTORY MANAGEMENT -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>📊 Inventory Management</h2>
+          <p class="section-subtitle">Track stock levels and get alerts</p>
+        </div>
+        <div class="inventory-controls">
+          <button onclick="loadLowStock()" class="btn-secondary">
+            ⚠️ Low Stock Items
+          </button>
+          <button onclick="loadInventoryReport()" class="btn-secondary">
+            📈 Full Report
+          </button>
+        </div>
+        <div id="inventoryReport" class="inventory-report"></div>
+      </section>
 
-const productForm = document.getElementById("productForm");
-const productTableBody = document.querySelector("#productTable tbody");
+      <!-- SALES REPORTS -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>📈 Sales Reports</h2>
+          <p class="section-subtitle">Analytics and insights</p>
+        </div>
+        <div id="salesReport" class="sales-report">Loading...</div>
+      </section>
+    </main>
 
-productForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const product = {
-    name: document.getElementById("productName").value,
-    price: parseFloat(document.getElementById("productPrice").value),
-    quantity: parseInt(document.getElementById("productQuantity").value)
-  };
-  products.push(product);
-  renderProducts();
-  updateOrderProductOptions();
-  productForm.reset();
-});
+    <!-- Customer History Modal -->
+    <div id="customerHistoryModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeCustomerHistory()">&times;</span>
+        <h2>Customer Purchase History</h2>
+        <div id="customerHistoryContent"></div>
+      </div>
+    </div>
 
-function renderProducts() {
-  productTableBody.innerHTML = "";
-  products.forEach((p, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${p.name}</td>
-      <td>${p.price}</td>
-      <td>${p.quantity}</td>
-      <td>
-        <button onclick="editProduct(${index})">Edit</button>
-        <button onclick="deleteProduct(${index})">Delete</button>
-      </td>`;
-    productTableBody.appendChild(row);
-  });
-}
-function deleteProduct(i) {
-  products.splice(i, 1);
-  renderProducts();
-  updateOrderProductOptions();
-}
-function editProduct(i) {
-  const p = products[i];
-  document.getElementById("productName").value = p.name;
-  document.getElementById("productPrice").value = p.price;
-  document.getElementById("productQuantity").value = p.quantity;
-  deleteProduct(i);
-}
-
-const customerForm = document.getElementById("customerForm");
-const customerTableBody = document.querySelector("#customerTable tbody");
-
-customerForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const customer = {
-    name: document.getElementById("customerName").value,
-    email: document.getElementById("customerEmail").value,
-    phone: document.getElementById("customerPhone").value,
-    address: document.getElementById("customerAddress").value
-  };
-  customers.push(customer);
-  renderCustomers();
-  updateOrderCustomerOptions();
-  customerForm.reset();
-});
-
-function renderCustomers() {
-  customerTableBody.innerHTML = "";
-  customers.forEach((c, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${c.name}</td>
-      <td>${c.email}</td>
-      <td>${c.phone}</td>
-      <td>${c.address}</td>
-      <td>
-        <button onclick="editCustomer(${index})">Edit</button>
-        <button onclick="deleteCustomer(${index})">Delete</button>
-      </td>`;
-    customerTableBody.appendChild(row);
-  });
-}
-function deleteCustomer(i) {
-  customers.splice(i, 1);
-  renderCustomers();
-  updateOrderCustomerOptions();
-}
-function editCustomer(i) {
-  const c = customers[i];
-  document.getElementById("customerName").value = c.name;
-  document.getElementById("customerEmail").value = c.email;
-  document.getElementById("customerPhone").value = c.phone;
-  document.getElementById("customerAddress").value = c.address;
-  deleteCustomer(i);
-}
-
-const orderForm = document.getElementById("orderForm");
-const orderTableBody = document.querySelector("#orderTable tbody");
-const orderCustomerSelect = document.getElementById("orderCustomer");
-const orderProductSelect = document.getElementById("orderProduct");
-
-orderForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const product = products.find(p => p.name === orderProductSelect.value);
-  const order = {
-    customer: orderCustomerSelect.value,
-    product: orderProductSelect.value,
-    quantity: parseInt(document.getElementById("orderQuantity").value),
-    total: product ? product.price * parseInt(document.getElementById("orderQuantity").value) : 0,
-    date: new Date().toLocaleString()
-  };
-  orders.push(order);
-  renderOrders();
-  updateSalesReport();
-  orderForm.reset();
-});
-
-function renderOrders() {
-  orderTableBody.innerHTML = "";
-  orders.forEach((o, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${o.customer}</td>
-      <td>${o.product}</td>
-      <td>${o.quantity}</td>
-      <td>${o.total}</td>
-      <td>${o.date}</td>
-      <td>
-        <button onclick="editOrder(${index})">Edit</button>
-        <button onclick="deleteOrder(${index})">Delete</button>
-      </td>`;
-    orderTableBody.appendChild(row);
-  });
-}
-function deleteOrder(i) {
-  orders.splice(i, 1);
-  renderOrders();
-  updateSalesReport();
-}
-function editOrder(i) {
-  const o = orders[i];
-  orderCustomerSelect.value = o.customer;
-  orderProductSelect.value = o.product;
-  document.getElementById("orderQuantity").value = o.quantity;
-  deleteOrder(i);
-}
-
-const salesReportDiv = document.getElementById("salesReport");
-function updateSalesReport() {
-  if (orders.length === 0) {
-    salesReportDiv.textContent = "No sales yet.";
-    return;
-  }
-  const totalSales = orders.reduce((sum, o) => sum + o.total, 0);
-  const totalOrders = orders.length;
-
-  salesReportDiv.innerHTML = `
-    <p>Total Sales: Ksh ${totalSales}</p>
-    <p>Total Orders: ${totalOrders}</p>
-  `;
-}
-function updateOrderCustomerOptions() {
-  orderCustomerSelect.innerHTML = "";
-  customers.forEach(c => {
-    const option = document.createElement("option");
-    option.value = c.name;
-    option.textContent = c.name;
-    orderCustomerSelect.appendChild(option);
-  });
-}
-function updateOrderProductOptions() {
-  orderProductSelect.innerHTML = "";
-  products.forEach(p => {
-    const option = document.createElement("option");
-    option.value = p.name;
-    option.textContent = p.name + " (Ksh " + p.price + ")";
-    orderProductSelect.appendChild(option);
-  });
-}
-</script>
-</body>
+    <script src="js/dashboard.js"></script>
+  </body>
 </html>
-

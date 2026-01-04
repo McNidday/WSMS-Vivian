@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const registerForm = document.getElementById("registerForm");
-  const messageEl = document.getElementById("message");
+  const messageEl = document.getElementById("registerMessage");
 
   if (registerForm) {
     registerForm.addEventListener("submit", async (e) => {
@@ -8,6 +8,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+      if (!username || !password) {
+        showMessage("⚠️ Please fill in all fields.", "error");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showMessage("❌ Passwords do not match!", "error");
+        return;
+      }
+
+      if (password.length < 6) {
+        showMessage("❌ Password must be at least 6 characters long.", "error");
+        return;
+      }
 
       try {
         const res = await fetch("/api/auth/register", {
@@ -21,19 +37,28 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (res.ok) {
-          messageEl.style.color = "green";
-          messageEl.textContent = data.message || "Registration successful!";
+          showMessage("✅ " + (data.message || "Registration successful! Redirecting to login..."), "success");
           registerForm.reset();
+          
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 2000);
         } else {
-          messageEl.style.color = "red";
-          messageEl.textContent = data.message || "Registration failed!";
+          showMessage("❌ " + (data.message || "Registration failed!"), "error");
         }
       } catch (err) {
         console.error("Error:", err);
-        messageEl.style.color = "red";
-        messageEl.textContent = "Server error! Please try again later.";
+        showMessage("⚠️ Server error! Please try again later.", "error");
       }
     });
+  }
+
+  function showMessage(text, type) {
+    if (messageEl) {
+      messageEl.textContent = text;
+      messageEl.className = `theme-message ${type}`;
+      messageEl.style.display = "block";
+    }
   }
 });
 

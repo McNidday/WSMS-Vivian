@@ -1,8 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const aboutController = require('../controllers/aboutController');
+import { Router } from "express";
+import aboutController from "../controllers/aboutControllers.mjs";
 
-router.get('/', aboutController.getAbout);
-router.post('/', aboutController.updateAbout);
+const router = Router();
 
-module.exports = router;
+router.get("/", aboutController.getAllAbouts);
+router.post("/", aboutController.createAbout);
+router.get("/:id", aboutController.getAbout);
+router.put("/:id", aboutController.updateAbout);
+router.delete("/:id", aboutController.deleteAbout);
+
+export default router;

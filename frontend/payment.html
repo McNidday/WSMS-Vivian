@@ -2,79 +2,130 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment - Wholesale Management</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/theme.css">
 </head>
 <body>
-  <header>
-    <h1>Payment Options</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="service.html">Services</a>
-      <a href="payment.html" class="active">Payment</a>
-      <a href="login.html">Login</a>
-    </nav>
+  <header class="theme-header">
+    <div class="theme-header-content">
+      <h1>💳 Payment Options</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="service.html">Services</a>
+        <a href="payment.html" class="active">Payments</a>
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="login.html">Login</a>
+      </nav>
+    </div>
   </header>
 
-  <main>
-    <section>
-      <h2>Accepted Payment Methods</h2>
-      <ul>
-        <li>Cash</li>
-        <li>M-PESA</li>
-        <li>Bank Transfer</li>
-        <li>PayPal</li>
-        <li>Credit/Debit Cards</li>
-      </ul>
+  <main class="theme-main">
+    <section class="theme-section">
+      <div class="theme-section-header">
+        <h2>💳 Accepted Payment Methods</h2>
+        <p class="theme-section-subtitle">Secure and convenient payment options</p>
+      </div>
+      
+      <div class="theme-features">
+        <div class="theme-feature-card">
+          <div class="icon">💵</div>
+          <h3>Cash</h3>
+          <p>Traditional cash payments for in-person transactions</p>
+        </div>
+        <div class="theme-feature-card">
+          <div class="icon">📱</div>
+          <h3>M-PESA</h3>
+          <p>Mobile money payments via M-PESA for quick transactions</p>
+        </div>
+        <div class="theme-feature-card">
+          <div class="icon">🏦</div>
+          <h3>Bank Transfer</h3>
+          <p>Direct bank transfers for large orders</p>
+        </div>
+        <div class="theme-feature-card">
+          <div class="icon">🌐</div>
+          <h3>PayPal</h3>
+          <p>Secure online payments via PayPal</p>
+        </div>
+        <div class="theme-feature-card">
+          <div class="icon">💳</div>
+          <h3>Credit/Debit Cards</h3>
+          <p>Accept all major credit and debit cards</p>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2>Make a Payment</h2>
-      <form id="paymentForm">
-        <label for="name">Full Name:</label>
-        <input type="text" id="name" name="name" required>
+    <section class="theme-section">
+      <div class="theme-section-header">
+        <h2>💰 Make a Payment</h2>
+        <p class="theme-section-subtitle">Process payments quickly and securely</p>
+      </div>
+      
+      <form id="paymentForm" class="theme-form">
+        <div>
+          <label for="paymentCustomer">Customer: *</label>
+          <select id="paymentCustomer" name="customer" required>
+            <option value="">-- Loading Customers --</option>
+          </select>
+        </div>
 
-        <label for="amount">Amount (KES):</label>
-        <input type="number" id="amount" name="amount" required>
+        <div>
+          <label for="paymentOrder">Order (Optional):</label>
+          <select id="paymentOrder" name="order">
+            <option value="">-- Loading Orders --</option>
+          </select>
+        </div>
 
-        <label for="method">Payment Method:</label>
-        <select id="method" name="method" required>
-          <option value="">-- Select Method --</option>
-          <option value="cash">Cash</option>
-          <option value="mpesa">M-PESA</option>
-          <option value="bank">Bank Transfer</option>
-          <option value="paypal">PayPal</option>
-          <option value="card">Credit/Debit Card</option>
-        </select>
+        <div>
+          <label for="payerName">Payer Name:</label>
+          <input type="text" id="payerName" name="payerName" placeholder="Full Name">
+        </div>
 
-        <label for="reference">Transaction ID / Reference No.:</label>
-        <input type="text" id="reference" name="reference" required>
+        <div>
+          <label for="payerEmail">Payer Email:</label>
+          <input type="email" id="payerEmail" name="payerEmail" placeholder="email@example.com">
+        </div>
 
-        <label for="status">Payment Status:</label>
-        <select id="status" name="status" required>
-          <option value="pending">Pending</option>
-          <option value="completed">Completed</option>
-          <option value="failed">Failed</option>
-          <option value="refunded">Refunded</option>
-        </select>
+        <div>
+          <label for="paymentAmount">Amount (USD): *</label>
+          <input type="number" id="paymentAmount" name="amount" step="0.01" min="0" required>
+        </div>
 
-        <label for="notes">Notes (Optional):</label>
-        <textarea id="notes" name="notes" placeholder="Paid for Order #123></textarea>
+        <div>
+          <label for="paymentMethod">Payment Method: *</label>
+          <select id="paymentMethod" name="method" required>
+            <option value="">-- Select Method --</option>
+            <option value="cash">Cash</option>
+            <option value="mpesa">M-PESA</option>
+            <option value="bank">Bank Transfer</option>
+            <option value="paypal">PayPal</option>
+            <option value="card">Credit/Debit Card</option>
+          </select>
+        </div>
 
-        <button type="submit">Pay Now</button>
+        <div style="grid-column: 1 / -1;">
+          <label for="paymentDescription">Description (Optional):</label>
+          <textarea id="paymentDescription" name="description" placeholder="Payment notes..." style="min-height: 100px;"></textarea>
+        </div>
+
+        <div style="grid-column: 1 / -1;">
+          <button type="submit" class="theme-btn" style="width: 100%;">
+            Process Payment
+          </button>
+        </div>
       </form>
 
-      <p id="message"></p>
+      <div id="paymentMessage" style="margin-top: 20px;"></div>
     </section>
   </main>
 
-  <script src="../srcjs/payment.js"></script>
-
-  <footer>
+  <footer class="theme-footer">
     <p>&copy; 2025 Wholesale Management Co. All rights reserved.</p>
   </footer>
+
+  <script src="js/payment.js"></script>
 </body>
 </html>
-
-
