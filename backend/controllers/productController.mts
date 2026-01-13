@@ -3,8 +3,46 @@ import { Request, Response } from "express";
 
 export default {
   getAllProducts: async (req: Request, res: Response) => {
-    const products = await Product.find();
-    res.json(products);
+    try {
+      const { low, inventory } = req.query;
+
+      const filter: any = {};
+
+      // Apply low-stock filter ONLY if provided
+      if (low !== undefined) {
+        const lowValue = Number(low);
+        if (isNaN(lowValue)) {
+          return res.status(400).json({ message: "low must be a number" });
+        }
+        filter.quantity = { $lt: lowValue };
+      }
+
+      const products = await Product.find(filter);
+
+      // If inventory summary is NOT requested → return products only
+      if (!inventory) {
+        return res.json(products);
+      }
+
+      // Inventory statistics
+      const totalProducts = await Product.countDocuments();
+      const lowStockCount = await Product.countDocuments({
+        quantity: { $gt: 0, $lt: Number(low ?? 100) }
+      });
+      const outOfStockCount = await Product.countDocuments({
+        quantity: 0
+      });
+
+      return res.json({
+        totalProducts,
+        lowStockCount,
+        outOfStockCount,
+        products
+      });
+
+    } catch (error) {
+      res.status(500).json({ message: "Server error", error });
+    }
   },
   createProduct: async (req: Request, res: Response) => {
     const product = new Product(req.body);

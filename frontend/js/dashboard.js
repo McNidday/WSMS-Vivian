@@ -54,27 +54,24 @@ async function loadProducts() {
         p.quantity === 0
           ? '<span class="stock-out">Out of Stock</span>'
           : p.quantity < 10
-          ? '<span class="stock-low">Low Stock</span>'
-          : '<span class="stock-ok">In Stock</span>';
+            ? '<span class="stock-low">Low Stock</span>'
+            : '<span class="stock-ok">In Stock</span>';
       row.innerHTML = `
         <td><strong>${p.name}</strong></td>
         <td>$${p.price.toFixed(2)}</td>
         <td>${p.quantity}</td>
         <td>${stockStatus}</td>
         <td class="action-buttons">
-          <button class="btn-small btn-edit" onclick="editProduct('${
-            p._id
-          }')">Edit</button>
-          <button class="btn-small btn-delete" onclick="deleteProduct('${
-            p._id
-          }')">Delete</button>
+          <button class="btn-small btn-edit" onclick="editProduct('${p._id
+        }')">Edit</button>
+          <button class="btn-small btn-delete" onclick="deleteProduct('${p._id
+        }')">Delete</button>
         </td>
       `;
       productTableBody.appendChild(row);
 
-      orderProduct.innerHTML += `<option value="${p._id}">${
-        p.name
-      } ($${p.price.toFixed(2)})</option>`;
+      orderProduct.innerHTML += `<option value="${p._id}">${p.name
+        } ($${p.price.toFixed(2)})</option>`;
     });
   } catch (error) {
     console.error(error);
@@ -148,15 +145,12 @@ async function loadCustomers() {
         <td>${c.phone || "N/A"}</td>
         <td>${c.address || "N/A"}</td>
         <td class="action-buttons">
-          <button class="btn-small btn-history" onclick="viewCustomerHistory('${
-            c._id
-          }')">History</button>
-          <button class="btn-small btn-edit" onclick="editCustomer('${
-            c._id
-          }')">Edit</button>
-          <button class="btn-small btn-delete" onclick="deleteCustomer('${
-            c._id
-          }')">Delete</button>
+          <button class="btn-small btn-history" onclick="viewCustomerHistory('${c._id
+        }')">History</button>
+          <button class="btn-small btn-edit" onclick="editCustomer('${c._id
+        }')">Edit</button>
+          <button class="btn-small btn-delete" onclick="deleteCustomer('${c._id
+        }')">Delete</button>
         </td>
       `;
       customerTableBody.appendChild(row);
@@ -245,22 +239,20 @@ async function loadOrders() {
         <td>${o.products[0].productId.name}</td>
         <td>${o.products[0].quantity}</td>
         <td><strong>$${(o.totalPrice || o.totalAmount || 0).toFixed(
-          2
-        )}</strong></td>
+        2
+      )}</strong></td>
         <td>${statusBadge}</td>
         <td>${new Date(o.date).toLocaleDateString()}</td>
         <td class="action-buttons">
           <button class="btn-small btn-invoice" onclick='generateInvoice(${JSON.stringify(
-            o
-          ).replace(/'/g, "\\'")})'>📄 Invoice</button>
-          ${
-            o.status === "paid" || o.status === "processing"
-              ? `<button class="btn-small btn-edit" onclick="createShippingForOrder('${o._id}')">🚚 Ship</button>`
-              : ""
-          }
-          <button class="btn-small btn-delete" onclick="deleteOrder('${
-            o._id
-          }')">Delete</button>
+        o
+      ).replace(/'/g, "\\'")})'>📄 Invoice</button>
+          ${o.status === "paid" || o.status === "processing"
+          ? `<button class="btn-small btn-edit" onclick="createShippingForOrder('${o._id}')">🚚 Ship</button>`
+          : ""
+        }
+          <button class="btn-small btn-delete" onclick="deleteOrder('${o._id
+        }')">Delete</button>
         </td>
       `;
       orderTableBody.appendChild(row);
@@ -271,9 +263,8 @@ async function loadOrders() {
         shippingOrderSelect &&
         (o.status === "paid" || o.status === "processing")
       ) {
-        shippingOrderSelect.innerHTML += `<option value="${
-          o._id
-        }">Order #${o._id.slice(-6)} - ${o.customerId?.name}</option>`;
+        shippingOrderSelect.innerHTML += `<option value="${o._id
+          }">Order #${o._id.slice(-6)} - ${o.customerId?.name}</option>`;
       }
     });
   } catch (error) {
@@ -445,9 +436,9 @@ function generateInvoice(order) {
               <h2>INVOICE</h2>
               <p><strong>Invoice #:</strong> ${invoiceNumber}</p>
               <p><strong>Date:</strong> ${invoiceDate.toLocaleDateString(
-                "en-US",
-                { year: "numeric", month: "long", day: "numeric" }
-              )}</p>
+    "en-US",
+    { year: "numeric", month: "long", day: "numeric" }
+  )}</p>
               <p><strong>Order ID:</strong> ${order._id}</p>
             </div>
           </div>
@@ -462,13 +453,12 @@ function generateInvoice(order) {
             </div>
             <div class="detail-section">
               <h3>Order Details:</h3>
-              <p><strong>Status:</strong> <span style="color: ${
-                order.status === "paid"
-                  ? "#27ae60"
-                  : order.status === "delivered"
-                  ? "#3498db"
-                  : "#f39c12"
-              }">${(order.status || "pending").toUpperCase()}</span></p>
+              <p><strong>Status:</strong> <span style="color: ${order.status === "paid"
+      ? "#27ae60"
+      : order.status === "delivered"
+        ? "#3498db"
+        : "#f39c12"
+    }">${(order.status || "pending").toUpperCase()}</span></p>
               <p><strong>Order Date:</strong> ${invoiceDate.toLocaleDateString()}</p>
             </div>
           </div>
@@ -484,42 +474,40 @@ function generateInvoice(order) {
               </tr>
             </thead>
             <tbody>
-              ${
-                Array.isArray(order.products)
-                  ? order.products
-                      .map(
-                        (p) => `
+              ${Array.isArray(order.products)
+      ? order.products
+        .map(
+          (p) => `
                 <tr>
                   <td>${p.name || "Product"}</td>
                   <td>${p.name || "Product Item"}</td>
-                  <td class="text-right">${
-                    p.quantity || order.quantity || 1
-                  }</td>
+                  <td class="text-right">${p.quantity || order.quantity || 1
+            }</td>
                   <td class="text-right">$${(p.price || 0).toFixed(2)}</td>
                   <td class="text-right">$${(
-                    (p.price || 0) * (p.quantity || order.quantity || 1)
-                  ).toFixed(2)}</td>
+              (p.price || 0) * (p.quantity || order.quantity || 1)
+            ).toFixed(2)}</td>
                 </tr>
               `
-                      )
-                      .join("")
-                  : `
+        )
+        .join("")
+      : `
                 <tr>
                   <td>${order.productName || "Product"}</td>
                   <td>${order.productName || "Product Item"}</td>
                   <td class="text-right">${order.quantity || 1}</td>
                   <td class="text-right">$${(
-                    (order.totalPrice || order.totalAmount || 0) /
-                    (order.quantity || 1)
-                  ).toFixed(2)}</td>
+        (order.totalPrice || order.totalAmount || 0) /
+        (order.quantity || 1)
+      ).toFixed(2)}</td>
                   <td class="text-right">$${(
-                    order.totalPrice ||
-                    order.totalAmount ||
-                    0
-                  ).toFixed(2)}</td>
+        order.totalPrice ||
+        order.totalAmount ||
+        0
+      ).toFixed(2)}</td>
                 </tr>
               `
-              }
+    }
             </tbody>
           </table>
           
@@ -527,8 +515,8 @@ function generateInvoice(order) {
             <div class="total-row">
               <span>Subtotal:</span>
               <span>$${(order.totalPrice || order.totalAmount || 0).toFixed(
-                2
-              )}</span>
+      2
+    )}</span>
             </div>
             <div class="total-row">
               <span>Tax (0%):</span>
@@ -541,8 +529,8 @@ function generateInvoice(order) {
             <div class="total-row final">
               <span>Total Amount:</span>
               <span>$${(order.totalPrice || order.totalAmount || 0).toFixed(
-                2
-              )}</span>
+      2
+    )}</span>
             </div>
           </div>
           
@@ -561,9 +549,8 @@ function generateInvoice(order) {
 // ===== INVENTORY MANAGEMENT =====
 async function loadLowStock() {
   try {
-    const res = await fetch("/api/products/low-stock?threshold=10");
+    const res = await fetch("/api/products/?threshold=10");
     const products = await res.json();
-
     const inventoryDiv = document.getElementById("inventoryReport");
     if (products.length === 0) {
       inventoryDiv.innerHTML = "<p>✅ All products are well stocked!</p>";
@@ -573,9 +560,8 @@ async function loadLowStock() {
     let html =
       "<h3>⚠️ Low Stock Alert</h3><table border='1'><thead><tr><th>Product</th><th>Current Stock</th><th>Price</th></tr></thead><tbody>";
     products.forEach((p) => {
-      html += `<tr style="background: ${
-        p.quantity === 0 ? "#ffebee" : "#fff3e0"
-      }">
+      html += `<tr style="background: ${p.quantity === 0 ? "#ffebee" : "#fff3e0"
+        }">
         <td>${p.name}</td>
         <td><strong>${p.quantity}</strong></td>
         <td>$${p.price}</td>
@@ -592,18 +578,18 @@ async function loadLowStock() {
 
 async function loadInventoryReport() {
   try {
-    const res = await fetch("/api/products/inventory-report");
+    const res = await fetch("/api/products/?inventory=true");
     const report = await res.json();
-
+    console.log(report, "90000000000000000000000000000000000000000000")
     const inventoryDiv = document.getElementById("inventoryReport");
     let html = `
       <h3>📊 Inventory Report</h3>
       <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
         <div style="padding: 15px; background: #e3f2fd; border-radius: 8px;">
-          <strong>Total Products</strong><br>${report.totalProducts}
+          <strong>Total Products</strong><br>${report.products.length + 1}
         </div>
         <div style="padding: 15px; background: #e8f5e9; border-radius: 8px;">
-          <strong>Total Value</strong><br>$${report.totalValue.toFixed(2)}
+          <strong>Total Value</strong><br>$${report.products.length + 1}
         </div>
         <div style="padding: 15px; background: #fff3e0; border-radius: 8px;">
           <strong>Low Stock</strong><br>${report.lowStockCount}
@@ -621,21 +607,31 @@ async function loadInventoryReport() {
         <tbody>
     `;
 
+
+
     report.products.forEach((p) => {
+      console.log(p);
+      const getStatus = (qty) => {
+        if (qty <= 0) return "out_of_stock";
+        if (qty <= 10) return "low_stock";
+        return "in_stock";
+      };
+
       const statusColor =
-        p.status === "out_of_stock"
+        getStatus(p.quantity) === "out_of_stock"
           ? "#f44336"
-          : p.status === "low_stock"
-          ? "#ff9800"
-          : "#4caf50";
+          : getStatus(p.quantity) === "low_stock"
+            ? "#ff9800"
+            : "#4caf50";
+
       html += `<tr>
         <td>${p.name}</td>
         <td>${p.quantity}</td>
         <td>$${p.price}</td>
-        <td>$${p.totalValue.toFixed(2)}</td>
-        <td><span style="color: ${statusColor}; font-weight: bold;">${p.status
-        .replace("_", " ")
-        .toUpperCase()}</span></td>
+        <td>$${report.products.length + 1}</td>
+        <td><span style="color: ${statusColor}; font-weight: bold;">${getStatus(p.quantity)
+          .replace("_", " ")
+          .toUpperCase()}</span></td>
       </tr>`;
     });
 
@@ -710,18 +706,15 @@ async function loadShippings() {
         <td>${s.orderId?._id ? s.orderId._id.slice(-8) : "N/A"}</td>
         <td>${statusBadge}</td>
         <td>${s.currentLocation || "Warehouse"}</td>
-        <td>${
-          s.estimatedDelivery
-            ? new Date(s.estimatedDelivery).toLocaleDateString()
-            : "N/A"
+        <td>${s.estimatedDelivery
+          ? new Date(s.estimatedDelivery).toLocaleDateString()
+          : "N/A"
         }</td>
         <td class="action-buttons">
-          <button class="btn-small btn-edit" onclick="trackShipping('${
-            s.trackingNumber
-          }')">Track</button>
-          <button class="btn-small btn-edit" onclick="updateShippingStatus('${
-            s._id
-          }')">Update</button>
+          <button class="btn-small btn-edit" onclick="trackShipping('${s.trackingNumber
+        }')">Track</button>
+          <button class="btn-small btn-edit" onclick="updateShippingStatus('${s._id
+        }')">Update</button>
         </td>
       `;
       shippingTableBody.appendChild(row);
@@ -826,13 +819,13 @@ async function viewCustomerHistory(customerId) {
         </div>
         <div style="padding: 15px; background: #e8f5e9; border-radius: 8px;">
           <strong>Total Spent</strong><br>$${data.statistics.totalSpent.toFixed(
-            2
-          )}
+      2
+    )}
         </div>
         <div style="padding: 15px; background: #fff3e0; border-radius: 8px;">
           <strong>Avg Order</strong><br>$${data.statistics.averageOrderValue.toFixed(
-            2
-          )}
+      2
+    )}
         </div>
         <div style="padding: 15px; background: #fce4ec; border-radius: 8px;">
           <strong>Pending</strong><br>${data.statistics.pendingOrders}
@@ -851,21 +844,20 @@ async function viewCustomerHistory(customerId) {
         </thead>
         <tbody>
           ${data.orders
-            .map(
-              (o) => `
+        .map(
+          (o) => `
             <tr>
               <td>${new Date(o.date).toLocaleDateString()}</td>
               <td>${o.products
-                .map((p) => `${p.productId?.name || "Product"} (${p.quantity})`)
-                .join(", ")}</td>
+              .map((p) => `${p.productId?.name || "Product"} (${p.quantity})`)
+              .join(", ")}</td>
               <td>$${o.totalAmount.toFixed(2)}</td>
-              <td><span class="status-badge status-${
-                o.status
-              }">${o.status.toUpperCase()}</span></td>
+              <td><span class="status-badge status-${o.status
+            }">${o.status.toUpperCase()}</span></td>
             </tr>
           `
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
       
@@ -881,19 +873,18 @@ async function viewCustomerHistory(customerId) {
         </thead>
         <tbody>
           ${data.payments
-            .map(
-              (p) => `
+        .map(
+          (p) => `
             <tr>
               <td>${new Date(p.paymentDate).toLocaleDateString()}</td>
               <td>$${p.amount.toFixed(2)}</td>
               <td>${p.method.toUpperCase()}</td>
-              <td><span class="status-badge status-${
-                p.status
-              }">${p.status.toUpperCase()}</span></td>
+              <td><span class="status-badge status-${p.status
+            }">${p.status.toUpperCase()}</span></td>
             </tr>
           `
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
