@@ -1,6 +1,8 @@
 import Payment from "../models/payment.mjs";
 import Order from "../models/Order.mjs";
 import { Request, Response } from "express";
+import https from "https";
+import { DateTime } from "luxon";
 
 export default {
   getAllPayments: async (req: Request, res: Response) => {
@@ -18,12 +20,22 @@ export default {
 
   createPayment: async (req: Request, res: Response) => {
     try {
-      const { customerId, orderId, amount, method, payerName, payerEmail, description } = req.body;
-      
+      const {
+        customerId,
+        orderId,
+        amount,
+        method,
+        payerName,
+        payerEmail,
+        description,
+      } = req.body;
+
       if (!customerId || !amount || !method) {
-        return res.status(400).json({ message: "Customer ID, amount, and method are required" });
+        return res
+          .status(400)
+          .json({ message: "Customer ID, amount, and method are required" });
       }
-      
+
       // If PayPal, handle PayPal payment processing
       if (method.toLowerCase() === "paypal") {
         // For now, we'll simulate PayPal payment
@@ -37,31 +49,77 @@ export default {
           payerName: payerName || req.body.name,
           payerEmail: payerEmail || req.body.email,
           description: description || `Payment for order ${orderId || "N/A"}`,
-          currency: req.body.currency || "USD"
+          currency: "KSH",
         });
-        
+
         await payment.save();
-        
+
         // Simulate PayPal processing (in production, use PayPal SDK)
+        const timestamp = DateTime.now().toFormat("yyyyMMddhhmmss");
+        // Mpesa payment simulation
+        const data = JSON.stringify({
+          Password:
+            "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjYwMTIzMjM1NzQy",
+          BusinessShortCode: "174379",
+          Timestamp: timestamp,
+          Amount: "1",
+          PartyA: "254748612580",
+          PartyB: "174379",
+          TransactionType: "CustomerPayBillOnline",
+          PhoneNumber: "254748612580",
+          TransactionDesc: "Test",
+          AccountReference: "Test",
+          CallBackURL: "https://mydomain.com/mpesa-express-simulate/",
+        });
+
+        const options = {
+          hostname: "api.safaricom.co.ke",
+          path: "/YOUR_ENDPOINT",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer <ACCESS_TOKEN>",
+            "Content-Length": data.length,
+          },
+        };
+
+        const req = https.request(options, (res) => {
+          let body = "";
+          res.on("data", (chunk) => {
+            body += chunk;
+            console.log("data", data);
+          });
+          res.on("end", () => {
+            console.log(body);
+          });
+        });
+
+        req.on("error", (error) => {
+          console.error(error);
+        });
+
+        req.write(data);
+        req.end();
+
         // For demo purposes, we'll mark as completed after a short delay
         setTimeout(async () => {
-          await Payment.findByIdAndUpdate(payment._id, { 
+          await Payment.findByIdAndUpdate(payment._id, {
             status: "completed",
-            paypalTransactionId: `PAYPAL-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+            paypalTransactionId: `PAYPAL-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
           });
-          
+
           // Update order status if orderId is provided
           if (orderId) {
             await Order.findByIdAndUpdate(orderId, { status: "paid" });
           }
         }, 1000);
-        
+
         return res.status(201).json({
           ...payment.toObject(),
-          message: "PayPal payment initiated. Status will be updated shortly."
+          message: "PayPal payment initiated. Status will be updated shortly.",
         });
       }
-      
+
       // For other payment methods
       const payment = new Payment({
         customerId,
@@ -72,16 +130,16 @@ export default {
         payerName: payerName || req.body.name,
         payerEmail: payerEmail || req.body.email,
         description: description || `Payment via ${method}`,
-        currency: req.body.currency || "USD"
+        currency: req.body.currency || "USD",
       });
-      
+
       await payment.save();
-      
+
       // Update order status if orderId is provided
       if (orderId && payment.status === "completed") {
         await Order.findByIdAndUpdate(orderId, { status: "paid" });
       }
-      
+
       res.status(201).json(payment);
     } catch (error) {
       console.error("Error creating payment:", error);
@@ -106,7 +164,9 @@ export default {
 
   updatePayment: async (req: Request, res: Response) => {
     try {
-      const payment = await Payment.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      const payment = await Payment.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+      })
         .populate("customerId", "name email")
         .populate("orderId", "totalAmount status");
       if (!payment) {
@@ -131,28 +191,28 @@ export default {
       res.status(500).json({ message: "Failed to delete payment", error });
     }
   },
-  
+
   // PayPal webhook handler (for production PayPal integration)
   handlePayPalWebhook: async (req: Request, res: Response) => {
     try {
       // In production, verify webhook signature from PayPal
       const { event_type, resource } = req.body;
-      
+
       if (event_type === "PAYMENT.CAPTURE.COMPLETED") {
         const transactionId = resource.id;
         const amount = parseFloat(resource.amount.value);
-        
+
         // Find payment by transaction ID or update based on webhook data
         await Payment.findOneAndUpdate(
           { paypalTransactionId: transactionId },
-          { status: "completed" }
+          { status: "completed" },
         );
       }
-      
+
       res.status(200).json({ message: "Webhook processed" });
     } catch (error) {
       console.error("Error processing PayPal webhook:", error);
       res.status(500).json({ message: "Failed to process webhook", error });
     }
-  }
+  },
 };

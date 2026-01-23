@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Customer from "../models/Customer.mjs";
 import Order from "../models/Order.mjs";
 import Payment from "../models/payment.mjs";
@@ -44,6 +45,12 @@ export default {
     getCustomerHistory: async (req, res) => {
         try {
             const customerId = req.params.id;
+            
+            // Validate customerId
+            if (!customerId || !mongoose.Types.ObjectId.isValid(customerId)) {
+                return res.status(400).json({ message: "Invalid customer ID" });
+            }
+            
             const customer = await Customer.findById(customerId);
             if (!customer) {
                 return res.status(404).json({ message: "Customer not found" });

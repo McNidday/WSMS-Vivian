@@ -62,16 +62,19 @@ async function loadProducts() {
         <td>${p.quantity}</td>
         <td>${stockStatus}</td>
         <td class="action-buttons">
-          <button class="btn-small btn-edit" onclick="editProduct('${p._id
-        }')">Edit</button>
-          <button class="btn-small btn-delete" onclick="deleteProduct('${p._id
-        }')">Delete</button>
+          <button class="btn-small btn-edit" onclick="editProduct('${
+            p._id
+          }')">Edit</button>
+          <button class="btn-small btn-delete" onclick="deleteProduct('${
+            p._id
+          }')">Delete</button>
         </td>
       `;
       productTableBody.appendChild(row);
 
-      orderProduct.innerHTML += `<option value="${p._id}">${p.name
-        } ($${p.price.toFixed(2)})</option>`;
+      orderProduct.innerHTML += `<option value="${p._id}">${
+        p.name
+      } ($${p.price.toFixed(2)})</option>`;
     });
   } catch (error) {
     console.error(error);
@@ -145,12 +148,9 @@ async function loadCustomers() {
         <td>${c.phone || "N/A"}</td>
         <td>${c.address || "N/A"}</td>
         <td class="action-buttons">
-          <button class="btn-small btn-history" onclick="viewCustomerHistory('${c._id
-        }')">History</button>
-          <button class="btn-small btn-edit" onclick="editCustomer('${c._id
-        }')">Edit</button>
-          <button class="btn-small btn-delete" onclick="deleteCustomer('${c._id
-        }')">Delete</button>
+          <button class="btn-small btn-history" onclick="viewCustomerHistory('${c._id}')">History</button>
+          <button class="btn-small btn-edit" onclick="editCustomer('${c._id}')">Edit</button>
+          <button class="btn-small btn-delete" onclick="deleteCustomer('${c._id}')">Delete</button>
         </td>
       `;
       customerTableBody.appendChild(row);
@@ -239,20 +239,22 @@ async function loadOrders() {
         <td>${o.products[0].productId.name}</td>
         <td>${o.products[0].quantity}</td>
         <td><strong>$${(o.totalPrice || o.totalAmount || 0).toFixed(
-        2
-      )}</strong></td>
+          2,
+        )}</strong></td>
         <td>${statusBadge}</td>
         <td>${new Date(o.date).toLocaleDateString()}</td>
         <td class="action-buttons">
           <button class="btn-small btn-invoice" onclick='generateInvoice(${JSON.stringify(
-        o
-      ).replace(/'/g, "\\'")})'>📄 Invoice</button>
-          ${o.status === "paid" || o.status === "processing"
-          ? `<button class="btn-small btn-edit" onclick="createShippingForOrder('${o._id}')">🚚 Ship</button>`
-          : ""
-        }
-          <button class="btn-small btn-delete" onclick="deleteOrder('${o._id
-        }')">Delete</button>
+            o,
+          ).replace(/'/g, "\\'")})'>📄 Invoice</button>
+          ${
+            o.status === "paid" || o.status === "processing"
+              ? `<button class="btn-small btn-edit" onclick="createShippingForOrder('${o._id}')">🚚 Ship</button>`
+              : ""
+          }
+          <button class="btn-small btn-delete" onclick="deleteOrder('${
+            o._id
+          }')">Delete</button>
         </td>
       `;
       orderTableBody.appendChild(row);
@@ -263,8 +265,9 @@ async function loadOrders() {
         shippingOrderSelect &&
         (o.status === "paid" || o.status === "processing")
       ) {
-        shippingOrderSelect.innerHTML += `<option value="${o._id
-          }">Order #${o._id.slice(-6)} - ${o.customerId?.name}</option>`;
+        shippingOrderSelect.innerHTML += `<option value="${
+          o._id
+        }">Order #${o._id.slice(-6)} - ${o.customerId?.name}</option>`;
       }
     });
   } catch (error) {
@@ -436,9 +439,9 @@ function generateInvoice(order) {
               <h2>INVOICE</h2>
               <p><strong>Invoice #:</strong> ${invoiceNumber}</p>
               <p><strong>Date:</strong> ${invoiceDate.toLocaleDateString(
-    "en-US",
-    { year: "numeric", month: "long", day: "numeric" }
-  )}</p>
+                "en-US",
+                { year: "numeric", month: "long", day: "numeric" },
+              )}</p>
               <p><strong>Order ID:</strong> ${order._id}</p>
             </div>
           </div>
@@ -453,12 +456,13 @@ function generateInvoice(order) {
             </div>
             <div class="detail-section">
               <h3>Order Details:</h3>
-              <p><strong>Status:</strong> <span style="color: ${order.status === "paid"
-      ? "#27ae60"
-      : order.status === "delivered"
-        ? "#3498db"
-        : "#f39c12"
-    }">${(order.status || "pending").toUpperCase()}</span></p>
+              <p><strong>Status:</strong> <span style="color: ${
+                order.status === "paid"
+                  ? "#27ae60"
+                  : order.status === "delivered"
+                    ? "#3498db"
+                    : "#f39c12"
+              }">${(order.status || "pending").toUpperCase()}</span></p>
               <p><strong>Order Date:</strong> ${invoiceDate.toLocaleDateString()}</p>
             </div>
           </div>
@@ -474,40 +478,42 @@ function generateInvoice(order) {
               </tr>
             </thead>
             <tbody>
-              ${Array.isArray(order.products)
-      ? order.products
-        .map(
-          (p) => `
+              ${
+                Array.isArray(order.products)
+                  ? order.products
+                      .map(
+                        (p) => `
                 <tr>
                   <td>${p.name || "Product"}</td>
                   <td>${p.name || "Product Item"}</td>
-                  <td class="text-right">${p.quantity || order.quantity || 1
-            }</td>
+                  <td class="text-right">${
+                    p.quantity || order.quantity || 1
+                  }</td>
                   <td class="text-right">$${(p.price || 0).toFixed(2)}</td>
                   <td class="text-right">$${(
-              (p.price || 0) * (p.quantity || order.quantity || 1)
-            ).toFixed(2)}</td>
+                    (p.price || 0) * (p.quantity || order.quantity || 1)
+                  ).toFixed(2)}</td>
                 </tr>
-              `
-        )
-        .join("")
-      : `
+              `,
+                      )
+                      .join("")
+                  : `
                 <tr>
                   <td>${order.productName || "Product"}</td>
                   <td>${order.productName || "Product Item"}</td>
                   <td class="text-right">${order.quantity || 1}</td>
                   <td class="text-right">$${(
-        (order.totalPrice || order.totalAmount || 0) /
-        (order.quantity || 1)
-      ).toFixed(2)}</td>
+                    (order.totalPrice || order.totalAmount || 0) /
+                    (order.quantity || 1)
+                  ).toFixed(2)}</td>
                   <td class="text-right">$${(
-        order.totalPrice ||
-        order.totalAmount ||
-        0
-      ).toFixed(2)}</td>
+                    order.totalPrice ||
+                    order.totalAmount ||
+                    0
+                  ).toFixed(2)}</td>
                 </tr>
               `
-    }
+              }
             </tbody>
           </table>
           
@@ -515,8 +521,8 @@ function generateInvoice(order) {
             <div class="total-row">
               <span>Subtotal:</span>
               <span>$${(order.totalPrice || order.totalAmount || 0).toFixed(
-      2
-    )}</span>
+                2,
+              )}</span>
             </div>
             <div class="total-row">
               <span>Tax (0%):</span>
@@ -529,8 +535,8 @@ function generateInvoice(order) {
             <div class="total-row final">
               <span>Total Amount:</span>
               <span>$${(order.totalPrice || order.totalAmount || 0).toFixed(
-      2
-    )}</span>
+                2,
+              )}</span>
             </div>
           </div>
           
@@ -560,8 +566,9 @@ async function loadLowStock() {
     let html =
       "<h3>⚠️ Low Stock Alert</h3><table border='1'><thead><tr><th>Product</th><th>Current Stock</th><th>Price</th></tr></thead><tbody>";
     products.forEach((p) => {
-      html += `<tr style="background: ${p.quantity === 0 ? "#ffebee" : "#fff3e0"
-        }">
+      html += `<tr style="background: ${
+        p.quantity === 0 ? "#ffebee" : "#fff3e0"
+      }">
         <td>${p.name}</td>
         <td><strong>${p.quantity}</strong></td>
         <td>$${p.price}</td>
@@ -580,7 +587,7 @@ async function loadInventoryReport() {
   try {
     const res = await fetch("/api/products/?inventory=true");
     const report = await res.json();
-    console.log(report, "90000000000000000000000000000000000000000000")
+    console.log(report, "90000000000000000000000000000000000000000000");
     const inventoryDiv = document.getElementById("inventoryReport");
     let html = `
       <h3>📊 Inventory Report</h3>
@@ -607,8 +614,6 @@ async function loadInventoryReport() {
         <tbody>
     `;
 
-
-
     report.products.forEach((p) => {
       console.log(p);
       const getStatus = (qty) => {
@@ -629,7 +634,9 @@ async function loadInventoryReport() {
         <td>${p.quantity}</td>
         <td>$${p.price}</td>
         <td>$${report.products.length + 1}</td>
-        <td><span style="color: ${statusColor}; font-weight: bold;">${getStatus(p.quantity)
+        <td><span style="color: ${statusColor}; font-weight: bold;">${getStatus(
+          p.quantity,
+        )
           .replace("_", " ")
           .toUpperCase()}</span></td>
       </tr>`;
@@ -706,15 +713,18 @@ async function loadShippings() {
         <td>${s.orderId?._id ? s.orderId._id.slice(-8) : "N/A"}</td>
         <td>${statusBadge}</td>
         <td>${s.currentLocation || "Warehouse"}</td>
-        <td>${s.estimatedDelivery
-          ? new Date(s.estimatedDelivery).toLocaleDateString()
-          : "N/A"
+        <td>${
+          s.estimatedDelivery
+            ? new Date(s.estimatedDelivery).toLocaleDateString()
+            : "N/A"
         }</td>
         <td class="action-buttons">
-          <button class="btn-small btn-edit" onclick="trackShipping('${s.trackingNumber
-        }')">Track</button>
-          <button class="btn-small btn-edit" onclick="updateShippingStatus('${s._id
-        }')">Update</button>
+          <button class="btn-small btn-edit" onclick="trackShipping('${
+            s.trackingNumber
+          }')">Track</button>
+          <button class="btn-small btn-edit" onclick="updateShippingStatus('${
+            s._id
+          }')">Update</button>
         </td>
       `;
       shippingTableBody.appendChild(row);
@@ -773,7 +783,7 @@ function trackShipping(trackingNumber) {
 
 async function updateShippingStatus(shippingId) {
   const status = prompt(
-    "Enter new status (pending, in_transit, out_for_delivery, delivered, exception):"
+    "Enter new status (pending, in_transit, out_for_delivery, delivered, exception):",
   );
   const location = prompt("Enter current location:");
 
@@ -799,36 +809,44 @@ async function updateShippingStatus(shippingId) {
 // ===== CUSTOMER HISTORY =====
 async function viewCustomerHistory(customerId) {
   try {
-    const res = await fetch(`/api/customers/${customerId}/history`);
-    const data = await res.json();
+    console.log("Fetching customer history for ID:", customerId);
+    alert(`Loading history for customer ID: ${customerId}`); // Temporary debug
+    const res = await fetch(`/api/orders`);
+    console.log("Response status:", res.status, res.statusText);
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("Error response:", errorText);
+      throw new Error(`HTTP ${res.status}: ${res.statusText} - ${errorText}`);
+    }
+
+    let data = await res.json();
+    console.log("Received data:", data);
+    data = data.filter((order) => order.customerId._id === customerId);
 
     const modal = document.getElementById("customerHistoryModal");
     const content = document.getElementById("customerHistoryContent");
-
+    console.log("Filtered data for customer:", data);
     content.innerHTML = `
       <div style="margin-bottom: 20px;">
-        <h3>${data.customer.name}</h3>
-        <p><strong>Email:</strong> ${data.customer.email}</p>
-        <p><strong>Phone:</strong> ${data.customer.phone || "N/A"}</p>
-        <p><strong>Address:</strong> ${data.customer.address || "N/A"}</p>
+        <h3>${data[0].customerId.name}</h3>
+        <p><strong>Email:</strong> ${data[0].customerId.email}</p>
+        <p><strong>Phone:</strong> ${data[0].customerId.phone || "N/A"}</p>
+        <p><strong>Address:</strong> ${data[0].customerId.address || "N/A"}</p>
       </div>
       
       <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px;">
         <div style="padding: 15px; background: #e3f2fd; border-radius: 8px;">
-          <strong>Total Orders</strong><br>${data.statistics.totalOrders}
+          <strong>Total Orders</strong><br>${data.length.toFixed(0)}
         </div>
         <div style="padding: 15px; background: #e8f5e9; border-radius: 8px;">
-          <strong>Total Spent</strong><br>$${data.statistics.totalSpent.toFixed(
-      2
-    )}
+          <strong>Total Spent</strong><br>$${data.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)}
         </div>
         <div style="padding: 15px; background: #fff3e0; border-radius: 8px;">
-          <strong>Avg Order</strong><br>$${data.statistics.averageOrderValue.toFixed(
-      2
-    )}
+          <strong>Avg Order</strong><br>$${data.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)}
         </div>
         <div style="padding: 15px; background: #fce4ec; border-radius: 8px;">
-          <strong>Pending</strong><br>${data.statistics.pendingOrders}
+          <strong>Pending</strong><br>${data.filter((o) => o.status === "pending").length}
         </div>
       </div>
       
@@ -843,21 +861,22 @@ async function viewCustomerHistory(customerId) {
           </tr>
         </thead>
         <tbody>
-          ${data.orders
-        .map(
-          (o) => `
+          ${data
+            .map(
+              (o) => `
             <tr>
               <td>${new Date(o.date).toLocaleDateString()}</td>
               <td>${o.products
-              .map((p) => `${p.productId?.name || "Product"} (${p.quantity})`)
-              .join(", ")}</td>
+                .map((p) => `${p.productId?.name || "Product"} (${p.quantity})`)
+                .join(", ")}</td>
               <td>$${o.totalAmount.toFixed(2)}</td>
-              <td><span class="status-badge status-${o.status
-            }">${o.status.toUpperCase()}</span></td>
+              <td><span class="status-badge status-${
+                o.status
+              }">${o.status.toUpperCase()}</span></td>
             </tr>
-          `
-        )
-        .join("")}
+          `,
+            )
+            .join("")}
         </tbody>
       </table>
       
@@ -872,19 +891,20 @@ async function viewCustomerHistory(customerId) {
           </tr>
         </thead>
         <tbody>
-          ${data.payments
-        .map(
-          (p) => `
+          ${data
+            .map(
+              (p) => `
             <tr>
               <td>${new Date(p.paymentDate).toLocaleDateString()}</td>
-              <td>$${p.amount.toFixed(2)}</td>
-              <td>${p.method.toUpperCase()}</td>
-              <td><span class="status-badge status-${p.status
-            }">${p.status.toUpperCase()}</span></td>
+              <td>$${p.totalAmount.toFixed(2)}</td>
+              <td>Mpesa</td>
+              <td><span class="status-badge status-${
+                p.status
+              }">${p.status.toUpperCase()}</span></td>
             </tr>
-          `
-        )
-        .join("")}
+          `,
+            )
+            .join("")}
         </tbody>
       </table>
     `;
@@ -892,7 +912,7 @@ async function viewCustomerHistory(customerId) {
     modal.style.display = "block";
   } catch (error) {
     console.error("Error loading customer history:", error);
-    alert("Failed to load customer history");
+    alert(`Failed to load customer history: ${error.message}`);
   }
 }
 
@@ -900,10 +920,72 @@ function closeCustomerHistory() {
   document.getElementById("customerHistoryModal").style.display = "none";
 }
 
+async function editCustomer(customerId) {
+  try {
+    const res = await fetch(`/api/customers/${customerId}`);
+    const customer = await res.json();
+
+    document.getElementById("editCustomerName").value = customer.name;
+    document.getElementById("editCustomerEmail").value = customer.email;
+    document.getElementById("editCustomerPhone").value = customer.phone || "";
+    document.getElementById("editCustomerAddress").value =
+      customer.address || "";
+
+    const form = document.getElementById("editCustomerForm");
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("editCustomerName").value.trim();
+      const email = document.getElementById("editCustomerEmail").value.trim();
+      const phone = document.getElementById("editCustomerPhone").value.trim();
+      const address = document
+        .getElementById("editCustomerAddress")
+        .value.trim();
+
+      if (!name || !email) {
+        alert("⚠️ Name and email are required.");
+        return;
+      }
+
+      try {
+        const updateRes = await fetch(`/api/customers/${customerId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, phone, address }),
+        });
+
+        if (updateRes.ok) {
+          closeCustomerEdit();
+          loadCustomers();
+          alert("✅ Customer updated successfully!");
+        } else {
+          alert("❌ Failed to update customer.");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("⚠️ Could not connect to server.");
+      }
+    };
+
+    document.getElementById("customerEditModal").style.display = "block";
+  } catch (error) {
+    console.error("Error loading customer:", error);
+    alert("Failed to load customer data");
+  }
+}
+
+function closeCustomerEdit() {
+  document.getElementById("customerEditModal").style.display = "none";
+}
+
 window.onclick = function (event) {
-  const modal = document.getElementById("customerHistoryModal");
-  if (event.target == modal) {
-    modal.style.display = "none";
+  const historyModal = document.getElementById("customerHistoryModal");
+  const editModal = document.getElementById("customerEditModal");
+  if (event.target == historyModal) {
+    historyModal.style.display = "none";
+  }
+  if (event.target == editModal) {
+    editModal.style.display = "none";
   }
 };
 

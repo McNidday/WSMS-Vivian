@@ -1,195 +1,271 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Wholesale Management System</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard | Wholesale Management System</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-</head>
+  <body>
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1>📦 Wholesale Management Dashboard</h1>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="dashboard.html" class="active">Dashboard</a>
+          <a href="payment.html">Payments</a>
+          <a href="login.html">Login</a>
+        </nav>
+      </div>
+    </header>
 
-<body>
-  <header class="dashboard-header">
-    <div class="header-content">
-      <h1>📦 Wholesale Management Dashboard</h1>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="dashboard.html" class="active">Dashboard</a>
-        <a href="payment.html">Payments</a>
-        <a href="login.html">Login</a>
-      </nav>
+    <main class="dashboard-main">
+      <!-- PRODUCT MANAGEMENT -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>📦 Product Management</h2>
+          <p class="section-subtitle">Add and organize inventory with ease</p>
+        </div>
+        <form id="productForm" class="form-grid">
+          <input
+            type="text"
+            id="productName"
+            placeholder="Product Name"
+            required
+          />
+          <input
+            type="number"
+            id="productPrice"
+            placeholder="Price ($)"
+            step="0.01"
+            required
+          />
+          <input
+            type="number"
+            id="productQuantity"
+            placeholder="Quantity"
+            min="0"
+            required
+          />
+          <button type="submit" class="btn-primary">➕ Add Product</button>
+        </form>
+        <div class="table-container">
+          <table id="productTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Stock Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CUSTOMER MANAGEMENT -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>👥 Customer Manager</h2>
+          <p class="section-subtitle">
+            View purchase history and contact details
+          </p>
+        </div>
+        <form id="customerForm" class="form-grid">
+          <input
+            type="text"
+            id="customerName"
+            placeholder="Full Name"
+            required
+          />
+          <input type="email" id="customerEmail" placeholder="Email" required />
+          <input
+            type="text"
+            id="customerPhone"
+            placeholder="Phone Number"
+            required
+          />
+          <input
+            type="text"
+            id="customerAddress"
+            placeholder="Address"
+            required
+          />
+          <button type="submit" class="btn-primary">➕ Add Customer</button>
+        </form>
+        <div class="table-container">
+          <table id="customerTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ORDER PROCESSING -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>🛒 Order Processing</h2>
+          <p class="section-subtitle">
+            Handle sales orders quickly and efficiently
+          </p>
+        </div>
+        <form id="orderForm" class="form-grid">
+          <select id="orderCustomer" required>
+            <option value="">-- Select Customer --</option>
+          </select>
+          <select id="orderProduct" required>
+            <option value="">-- Select Product --</option>
+          </select>
+          <input
+            type="number"
+            id="orderQuantity"
+            placeholder="Quantity"
+            min="1"
+            required
+          />
+          <button type="submit" class="btn-primary">📝 Place Order</button>
+        </form>
+        <div class="table-container">
+          <table id="orderTable">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SHIPPING TOOLS -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>🚚 Shipping Tools</h2>
+          <p class="section-subtitle">
+            Assign and track deliveries in real-time
+          </p>
+        </div>
+        <div class="shipping-controls">
+          <select id="shippingOrder" class="form-select">
+            <option value="">-- Select Order to Ship --</option>
+          </select>
+          <input
+            type="text"
+            id="shippingAddress"
+            placeholder="Shipping Address"
+            class="form-input"
+          />
+          <input type="date" id="estimatedDelivery" class="form-input" />
+          <button onclick="createShipping()" class="btn-primary">
+            📦 Create Shipment
+          </button>
+        </div>
+        <div class="table-container">
+          <table id="shippingTable">
+            <thead>
+              <tr>
+                <th>Tracking #</th>
+                <th>Order ID</th>
+                <th>Status</th>
+                <th>Location</th>
+                <th>Est. Delivery</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- INVENTORY MANAGEMENT -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>📊 Inventory Management</h2>
+          <p class="section-subtitle">Track stock levels and get alerts</p>
+        </div>
+        <div class="inventory-controls">
+          <button onclick="loadLowStock()" class="btn-secondary">
+            ⚠️ Low Stock Items
+          </button>
+          <button onclick="loadInventoryReport()" class="btn-secondary">
+            📈 Full Report
+          </button>
+        </div>
+        <div id="inventoryReport" class="inventory-report"></div>
+      </section>
+
+      <!-- SALES REPORTS -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>📈 Sales Reports</h2>
+          <p class="section-subtitle">Analytics and insights</p>
+        </div>
+        <div id="salesReport" class="sales-report">Loading...</div>
+      </section>
+    </main>
+
+    <!-- Customer History Modal -->
+    <div id="customerHistoryModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeCustomerHistory()">&times;</span>
+        <h2>Customer Purchase History</h2>
+        <div id="customerHistoryContent"></div>
+      </div>
     </div>
-  </header>
 
-  <main class="dashboard-main">
-    <!-- PRODUCT MANAGEMENT -->
-    <section class="dashboard-section">
-      <div class="section-header">
-        <h2>📦 Product Management</h2>
-        <p class="section-subtitle">Add and organize inventory with ease</p>
+    <!-- Customer Edit Modal -->
+    <div id="customerEditModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeCustomerEdit()">&times;</span>
+        <h2>Edit Customer</h2>
+        <form id="editCustomerForm" class="form-grid">
+          <input
+            type="text"
+            id="editCustomerName"
+            placeholder="Full Name"
+            required
+          />
+          <input
+            type="email"
+            id="editCustomerEmail"
+            placeholder="Email"
+            required
+          />
+          <input
+            type="text"
+            id="editCustomerPhone"
+            placeholder="Phone Number"
+            required
+          />
+          <input
+            type="text"
+            id="editCustomerAddress"
+            placeholder="Address"
+            required
+          />
+          <button type="submit" class="btn-primary">💾 Update Customer</button>
+        </form>
       </div>
-      <form id="productForm" class="form-grid">
-        <input type="text" id="productName" placeholder="Product Name" required />
-        <input type="number" id="productPrice" placeholder="Price ($)" step="0.01" required />
-        <input type="number" id="productQuantity" placeholder="Quantity" min="0" required />
-        <button type="submit" class="btn-primary">➕ Add Product</button>
-      </form>
-      <div class="table-container">
-        <table id="productTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Stock Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- CUSTOMER MANAGEMENT -->
-    <section class="dashboard-section">
-      <div class="section-header">
-        <h2>👥 Customer Manager</h2>
-        <p class="section-subtitle">
-          View purchase history and contact details
-        </p>
-      </div>
-      <form id="customerForm" class="form-grid">
-        <input type="text" id="customerName" placeholder="Full Name" required />
-        <input type="email" id="customerEmail" placeholder="Email" required />
-        <input type="text" id="customerPhone" placeholder="Phone Number" required />
-        <input type="text" id="customerAddress" placeholder="Address" required />
-        <button type="submit" class="btn-primary">➕ Add Customer</button>
-      </form>
-      <div class="table-container">
-        <table id="customerTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Address</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ORDER PROCESSING -->
-    <section class="dashboard-section">
-      <div class="section-header">
-        <h2>🛒 Order Processing</h2>
-        <p class="section-subtitle">
-          Handle sales orders quickly and efficiently
-        </p>
-      </div>
-      <form id="orderForm" class="form-grid">
-        <select id="orderCustomer" required>
-          <option value="">-- Select Customer --</option>
-        </select>
-        <select id="orderProduct" required>
-          <option value="">-- Select Product --</option>
-        </select>
-        <input type="number" id="orderQuantity" placeholder="Quantity" min="1" required />
-        <button type="submit" class="btn-primary">📝 Place Order</button>
-      </form>
-      <div class="table-container">
-        <table id="orderTable">
-          <thead>
-            <tr>
-              <th>Customer</th>
-              <th>Product</th>
-              <th>Quantity</th>
-              <th>Total Price</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- SHIPPING TOOLS -->
-    <section class="dashboard-section">
-      <div class="section-header">
-        <h2>🚚 Shipping Tools</h2>
-        <p class="section-subtitle">
-          Assign and track deliveries in real-time
-        </p>
-      </div>
-      <div class="shipping-controls">
-        <select id="shippingOrder" class="form-select">
-          <option value="">-- Select Order to Ship --</option>
-        </select>
-        <input type="text" id="shippingAddress" placeholder="Shipping Address" class="form-input" />
-        <input type="date" id="estimatedDelivery" class="form-input" />
-        <button onclick="createShipping()" class="btn-primary">
-          📦 Create Shipment
-        </button>
-      </div>
-      <div class="table-container">
-        <table id="shippingTable">
-          <thead>
-            <tr>
-              <th>Tracking #</th>
-              <th>Order ID</th>
-              <th>Status</th>
-              <th>Location</th>
-              <th>Est. Delivery</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- INVENTORY MANAGEMENT -->
-    <section class="dashboard-section">
-      <div class="section-header">
-        <h2>📊 Inventory Management</h2>
-        <p class="section-subtitle">Track stock levels and get alerts</p>
-      </div>
-      <div class="inventory-controls">
-        <button onclick="loadLowStock()" class="btn-secondary">
-          ⚠️ Low Stock Items
-        </button>
-        <button onclick="loadInventoryReport()" class="btn-secondary">
-          📈 Full Report
-        </button>
-      </div>
-      <div id="inventoryReport" class="inventory-report"></div>
-    </section>
-
-    <!-- SALES REPORTS -->
-    <section class="dashboard-section">
-      <div class="section-header">
-        <h2>📈 Sales Reports</h2>
-        <p class="section-subtitle">Analytics and insights</p>
-      </div>
-      <div id="salesReport" class="sales-report">Loading...</div>
-    </section>
-  </main>
-
-  <!-- Customer History Modal -->
-  <div id="customerHistoryModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeCustomerHistory()">&times;</span>
-      <h2>Customer Purchase History</h2>
-      <div id="customerHistoryContent"></div>
     </div>
-  </div>
 
-  <script src="js/dashboard.js"></script>
-</body>
-
+    <script src="js/dashboard.js"></script>
+  </body>
 </html>
