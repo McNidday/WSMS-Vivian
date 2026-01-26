@@ -3,6 +3,7 @@ import Order from "../models/Order.mjs";
 import { Request, Response } from "express";
 import https from "https";
 import { DateTime } from "luxon";
+import axios from "axios";
 
 export default {
   getAllPayments: async (req: Request, res: Response) => {
@@ -29,95 +30,10 @@ export default {
         payerEmail,
         description,
       } = req.body;
-
       if (!customerId || !amount || !method) {
         return res
           .status(400)
           .json({ message: "Customer ID, amount, and method are required" });
-      }
-
-      // If PayPal, handle PayPal payment processing
-      if (method.toLowerCase() === "paypal") {
-        // For now, we'll simulate PayPal payment
-        // In production, integrate with PayPal SDK
-        const payment = new Payment({
-          customerId,
-          orderId,
-          amount,
-          method: "paypal",
-          status: "pending",
-          payerName: payerName || req.body.name,
-          payerEmail: payerEmail || req.body.email,
-          description: description || `Payment for order ${orderId || "N/A"}`,
-          currency: "KSH",
-        });
-
-        await payment.save();
-
-        // Simulate PayPal processing (in production, use PayPal SDK)
-        const timestamp = DateTime.now().toFormat("yyyyMMddhhmmss");
-        // Mpesa payment simulation
-        const data = JSON.stringify({
-          Password:
-            "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjYwMTIzMjM1NzQy",
-          BusinessShortCode: "174379",
-          Timestamp: timestamp,
-          Amount: "1",
-          PartyA: "254748612580",
-          PartyB: "174379",
-          TransactionType: "CustomerPayBillOnline",
-          PhoneNumber: "254748612580",
-          TransactionDesc: "Test",
-          AccountReference: "Test",
-          CallBackURL: "https://mydomain.com/mpesa-express-simulate/",
-        });
-
-        const options = {
-          hostname: "api.safaricom.co.ke",
-          path: "/YOUR_ENDPOINT",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer <ACCESS_TOKEN>",
-            "Content-Length": data.length,
-          },
-        };
-
-        const req = https.request(options, (res) => {
-          let body = "";
-          res.on("data", (chunk) => {
-            body += chunk;
-            console.log("data", data);
-          });
-          res.on("end", () => {
-            console.log(body);
-          });
-        });
-
-        req.on("error", (error) => {
-          console.error(error);
-        });
-
-        req.write(data);
-        req.end();
-
-        // For demo purposes, we'll mark as completed after a short delay
-        setTimeout(async () => {
-          await Payment.findByIdAndUpdate(payment._id, {
-            status: "completed",
-            paypalTransactionId: `PAYPAL-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-          });
-
-          // Update order status if orderId is provided
-          if (orderId) {
-            await Order.findByIdAndUpdate(orderId, { status: "paid" });
-          }
-        }, 1000);
-
-        return res.status(201).json({
-          ...payment.toObject(),
-          message: "PayPal payment initiated. Status will be updated shortly.",
-        });
       }
 
       // For other payment methods
@@ -130,20 +46,47 @@ export default {
         payerName: payerName || req.body.name,
         payerEmail: payerEmail || req.body.email,
         description: description || `Payment via ${method}`,
-        currency: req.body.currency || "USD",
+        currency: req.body.currency || "KSH",
       });
 
       await payment.save();
 
-      // Update order status if orderId is provided
-      if (orderId && payment.status === "completed") {
-        await Order.findByIdAndUpdate(orderId, { status: "paid" });
+      if (method.toLowerCase() !== "cash") {
+        // Simulate PayPal processing (in production, use PayPal SDK)
+        const timestamp = DateTime.now().toFormat("yyyyMMddhhmmss");
+        // Mpesa payment simulation
+        const res = await axios.post(
+          "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+          {
+            Password:
+              "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjYwMTIzMjM1NzQy",
+            BusinessShortCode: "174379",
+            Timestamp: timestamp,
+            Amount: "1",
+            PartyA: "254748612580",
+            PartyB: "174379",
+            TransactionType: "CustomerPayBillOnline",
+            PhoneNumber: "254748612580",
+            TransactionDesc: "Test",
+            AccountReference: "Test",
+            CallBackURL: "https://mydomain.com/mpesa-express-simulate/",
+          },
+          { headers: { Authorization: `Bearer ACCES` } },
+        );
+        console.log("Simulated PayPal/Mpesa response:", res.data);
       }
+
+      // For demo purposes, we'll mark as completed after a short delay
+      setTimeout(async () => {
+        await Payment.findByIdAndUpdate(payment._id, {
+          status: "completed",
+        });
+      }, 1000);
 
       res.status(201).json(payment);
     } catch (error) {
-      console.error("Error creating payment:", error);
-      res.status(500).json({ message: "Failed to create payment", error });
+      console.error("Error creating payment:", error?.response?.data || error);
+      res.status(500).json({ message: "Failed to create payment" });
     }
   },
 
