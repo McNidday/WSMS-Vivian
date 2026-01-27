@@ -266,6 +266,37 @@
       </div>
     </div>
 
+    <!-- Product Edit Modal -->
+    <div id="productEditModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeProductEdit()">&times;</span>
+        <h2>Edit Product</h2>
+        <form id="editProductForm" class="form-grid">
+          <input
+            type="text"
+            id="editProductName"
+            placeholder="Product Name"
+            required
+          />
+          <input
+            type="number"
+            id="editProductPrice"
+            placeholder="Price ($)"
+            step="0.01"
+            required
+          />
+          <input
+            type="number"
+            id="editProductQuantity"
+            placeholder="Quantity"
+            min="0"
+            required
+          />
+          <button type="submit" class="btn-primary">💾 Update Product</button>
+        </form>
+      </div>
+    </div>
+
     <script src="js/dashboard.js"></script>
   </body>
 </html>

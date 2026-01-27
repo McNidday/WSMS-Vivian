@@ -92,6 +92,59 @@ async function deleteProduct(id) {
   }
 }
 
+async function editProduct(productId) {
+  try {
+    const res = await fetch(`/api/products/${productId}`);
+    const product = await res.json();
+
+    document.getElementById("editProductName").value = product.name;
+    document.getElementById("editProductPrice").value = product.price;
+    document.getElementById("editProductQuantity").value = product.quantity;
+
+    const form = document.getElementById("editProductForm");
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("editProductName").value.trim();
+      const price = parseFloat(document.getElementById("editProductPrice").value);
+      const quantity = parseInt(document.getElementById("editProductQuantity").value);
+
+      if (!name || isNaN(price) || isNaN(quantity)) {
+        alert("⚠️ Please fill in all product fields correctly.");
+        return;
+      }
+
+      try {
+        const updateRes = await fetch(`/api/products/${productId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, price, quantity }),
+        });
+
+        if (updateRes.ok) {
+          closeProductEdit();
+          loadProducts();
+          alert("✅ Product updated successfully!");
+        } else {
+          alert("❌ Failed to update product.");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("⚠️ Could not connect to server.");
+      }
+    };
+
+    document.getElementById("productEditModal").style.display = "block";
+  } catch (error) {
+    console.error("Error loading product:", error);
+    alert("Failed to load product data");
+  }
+}
+
+function closeProductEdit() {
+  document.getElementById("productEditModal").style.display = "none";
+}
+
 // ===== CUSTOMERS =====
 const customerForm = document.getElementById("customerForm");
 const customerTableBody = document.querySelector("#customerTable tbody");
