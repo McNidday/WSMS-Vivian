@@ -51,29 +51,6 @@ export default {
 
       await payment.save();
 
-      if (method.toLowerCase() !== "cash") {
-        const timestamp = DateTime.now().toFormat("yyyyMMddhhmmss");
-        // Mpesa payment simulation
-        const res = await axios.post(
-          "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
-          {
-            Password:
-              "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjYwMTIzMjM1NzQy",
-            BusinessShortCode: "174379",
-            Timestamp: timestamp,
-            Amount: "1",
-            PartyA: "254748612580",
-            PartyB: "174379",
-            TransactionType: "CustomerPayBillOnline",
-            PhoneNumber: "254748612580",
-            TransactionDesc: "Test",
-            AccountReference: "Test",
-            CallBackURL: "https://mydomain.com/mpesa-express-simulate/",
-          },
-          { headers: { Authorization: `Bearer ACCES` } },
-        );
-        console.log("Simulated PayPal/Mpesa response:", res.data);
-      }
       // For demo purposes, we'll mark as completed after a short delay
       setTimeout(async () => {
         await Payment.findByIdAndUpdate(payment._id, {
