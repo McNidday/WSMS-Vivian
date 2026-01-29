@@ -52,7 +52,6 @@ export default {
       await payment.save();
 
       if (method.toLowerCase() !== "cash") {
-        // Simulate PayPal processing (in production, use PayPal SDK)
         const timestamp = DateTime.now().toFormat("yyyyMMddhhmmss");
         // Mpesa payment simulation
         const res = await axios.post(
@@ -75,7 +74,6 @@ export default {
         );
         console.log("Simulated PayPal/Mpesa response:", res.data);
       }
-
       // For demo purposes, we'll mark as completed after a short delay
       setTimeout(async () => {
         await Payment.findByIdAndUpdate(payment._id, {
