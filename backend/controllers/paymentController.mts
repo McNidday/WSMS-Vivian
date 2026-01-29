@@ -58,6 +58,12 @@ export default {
         });
       }, 1000);
 
+      const order = await Order.findById(orderId);
+      if (order) {
+        order.status = "paid";
+        await order.save();
+      }
+
       res.status(201).json(payment);
     } catch (error) {
       console.error("Error creating payment:", error?.response?.data || error);
