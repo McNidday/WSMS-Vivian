@@ -14,6 +14,11 @@ export default {
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
+    if (req.body.quantity > product.quantity) {
+      return res
+        .status(400)
+        .json({ message: "Insufficient stock for the product" });
+    }
     const order = new Order({
       customerId: req.body.customerId,
       products: [
