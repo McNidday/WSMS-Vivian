@@ -34,7 +34,7 @@ async function loadOrders() {
       orders
         .filter((o) => o.status !== "paid" && o.status !== "cancelled")
         .forEach((o) => {
-          orderSelect.innerHTML += `<option value="${o._id}" data-amount="${o.totalAmount}">Order #${o._id.slice(-6)} - $${o.totalAmount}</option>`;
+          orderSelect.innerHTML += `<option value="${o._id}" data-amount="${o.totalAmount}">Order #${o._id.slice(-6)} - KSH ${o.totalAmount}</option>`;
         });
     }
   } catch (error) {

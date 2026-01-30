@@ -58,7 +58,7 @@ async function loadProducts() {
             : '<span class="stock-ok">In Stock</span>';
       row.innerHTML = `
         <td><strong>${p.name}</strong></td>
-        <td>$${p.price.toFixed(2)}</td>
+        <td>KSH ${p.price.toFixed(2)}</td>
         <td>${p.quantity}</td>
         <td>${stockStatus}</td>
         <td class="action-buttons">
@@ -74,7 +74,7 @@ async function loadProducts() {
 
       orderProduct.innerHTML += `<option value="${p._id}">${
         p.name
-      } ($${p.price.toFixed(2)})</option>`;
+      } (KSH ${p.price.toFixed(2)})</option>`;
     });
   } catch (error) {
     console.error(error);
@@ -106,8 +106,12 @@ async function editProduct(productId) {
       e.preventDefault();
 
       const name = document.getElementById("editProductName").value.trim();
-      const price = parseFloat(document.getElementById("editProductPrice").value);
-      const quantity = parseInt(document.getElementById("editProductQuantity").value);
+      const price = parseFloat(
+        document.getElementById("editProductPrice").value,
+      );
+      const quantity = parseInt(
+        document.getElementById("editProductQuantity").value,
+      );
 
       if (!name || isNaN(price) || isNaN(quantity)) {
         alert("⚠️ Please fill in all product fields correctly.");
@@ -291,7 +295,7 @@ async function loadOrders() {
         <td><strong>${o.customerId.name}</strong></td>
         <td>${o.products[0].productId.name}</td>
         <td>${o.products[0].quantity}</td>
-        <td><strong>$${(o.totalPrice || o.totalAmount || 0).toFixed(
+        <td><strong>KSH ${(o.totalPrice || o.totalAmount || 0).toFixed(
           2,
         )}</strong></td>
         <td>${statusBadge}</td>
@@ -542,8 +546,8 @@ function generateInvoice(order) {
                   <td class="text-right">${
                     p.quantity || order.quantity || 1
                   }</td>
-                  <td class="text-right">$${(p.price || 0).toFixed(2)}</td>
-                  <td class="text-right">$${(
+                  <td class="text-right">KSH ${(p.price || 0).toFixed(2)}</td>
+                  <td class="text-right">KSH ${(
                     (p.price || 0) * (p.quantity || order.quantity || 1)
                   ).toFixed(2)}</td>
                 </tr>
@@ -555,11 +559,11 @@ function generateInvoice(order) {
                   <td>${order.productName || "Product"}</td>
                   <td>${order.productName || "Product Item"}</td>
                   <td class="text-right">${order.quantity || 1}</td>
-                  <td class="text-right">$${(
+                  <td class="text-right">KSH${(
                     (order.totalPrice || order.totalAmount || 0) /
                     (order.quantity || 1)
                   ).toFixed(2)}</td>
-                  <td class="text-right">$${(
+                  <td class="text-right">KSH${(
                     order.totalPrice ||
                     order.totalAmount ||
                     0
@@ -573,21 +577,21 @@ function generateInvoice(order) {
           <div class="total-section">
             <div class="total-row">
               <span>Subtotal:</span>
-              <span>$${(order.totalPrice || order.totalAmount || 0).toFixed(
+              <span>KSH ${(order.totalPrice || order.totalAmount || 0).toFixed(
                 2,
               )}</span>
             </div>
             <div class="total-row">
               <span>Tax (0%):</span>
-              <span>$0.00</span>
+              <span>KSH 0.00</span>
             </div>
             <div class="total-row">
               <span>Shipping:</span>
-              <span>$0.00</span>
+              <span>KSH 0.00</span>
             </div>
             <div class="total-row final">
               <span>Total Amount:</span>
-              <span>$${(order.totalPrice || order.totalAmount || 0).toFixed(
+              <span>KSH ${(order.totalPrice || order.totalAmount || 0).toFixed(
                 2,
               )}</span>
             </div>
@@ -624,7 +628,7 @@ async function loadLowStock() {
       }">
         <td>${p.name}</td>
         <td><strong>${p.quantity}</strong></td>
-        <td>$${p.price}</td>
+        <td>KSH${p.price}</td>
       </tr>`;
     });
     html += "</tbody></table>";
@@ -649,7 +653,7 @@ async function loadInventoryReport() {
           <strong>Total Products</strong><br>${report.products.length + 1}
         </div>
         <div style="padding: 15px; background: #e8f5e9; border-radius: 8px;">
-          <strong>Total Value</strong><br>$${report.products.length + 1}
+          <strong>Total Value</strong><br>KSH ${report.totalValue || 0}
         </div>
         <div style="padding: 15px; background: #fff3e0; border-radius: 8px;">
           <strong>Low Stock</strong><br>${report.lowStockCount}
@@ -685,8 +689,8 @@ async function loadInventoryReport() {
       html += `<tr>
         <td>${p.name}</td>
         <td>${p.quantity}</td>
-        <td>$${p.price}</td>
-        <td>$${report.products.length + 1}</td>
+        <td>KSH ${p.price}</td>
+        <td>KSH ${(p.quantity * p.price).toFixed(2)}</td>
         <td><span style="color: ${statusColor}; font-weight: bold;">${getStatus(
           p.quantity,
         )
@@ -714,7 +718,7 @@ async function loadReports() {
       <h3>Sales Report</h3>
       <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
         <div style="padding: 15px; background: #e3f2fd; border-radius: 8px;">
-          <strong>Total Sales</strong><br>$${report.totalSales || 0}
+          <strong>Total Sales</strong><br>KSH ${report.totalSales || 0}
         </div>
         <div style="padding: 15px; background: #e8f5e9; border-radius: 8px;">
           <strong>Total Orders</strong><br>${report.totalOrders || 0}
@@ -893,10 +897,10 @@ async function viewCustomerHistory(customerId) {
           <strong>Total Orders</strong><br>${data.length.toFixed(0)}
         </div>
         <div style="padding: 15px; background: #e8f5e9; border-radius: 8px;">
-          <strong>Total Spent</strong><br>$${data.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)}
+          <strong>Total Spent</strong><br>KSH${data.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)}
         </div>
         <div style="padding: 15px; background: #fff3e0; border-radius: 8px;">
-          <strong>Avg Order</strong><br>$${data.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)}
+          <strong>Avg Order</strong><br>KSH ${data.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)}
         </div>
         <div style="padding: 15px; background: #fce4ec; border-radius: 8px;">
           <strong>Pending</strong><br>${data.filter((o) => o.status === "pending").length}
@@ -922,7 +926,7 @@ async function viewCustomerHistory(customerId) {
               <td>${o.products
                 .map((p) => `${p.productId?.name || "Product"} (${p.quantity})`)
                 .join(", ")}</td>
-              <td>$${o.totalAmount.toFixed(2)}</td>
+              <td>KSH ${o.totalAmount.toFixed(2)}</td>
               <td><span class="status-badge status-${
                 o.status
               }">${o.status.toUpperCase()}</span></td>
@@ -949,7 +953,7 @@ async function viewCustomerHistory(customerId) {
               (p) => `
             <tr>
               <td>${new Date(p.paymentDate).toLocaleDateString()}</td>
-              <td>$${p.totalAmount.toFixed(2)}</td>
+              <td>KSH${p.totalAmount.toFixed(2)}</td>
               <td>Mpesa</td>
               <td><span class="status-badge status-${
                 p.status
